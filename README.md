@@ -14,5 +14,9 @@ App expets the port to be `11434` if you changed, change the link in the .env
 ## On the browser 
 `http://localhost:5173/`
 
+<img src="/public/app_image.png" alt="screenshot of the app" />
 
-<video src="public/conversation.webm" />
+<video width="320" height="240" controls>
+  <source src="/public/conversation.webm" type="video/webm">
+  Your browser does not support the video tag.
+ </video>

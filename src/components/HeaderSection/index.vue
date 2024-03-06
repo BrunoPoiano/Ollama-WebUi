@@ -21,6 +21,7 @@ import Menu from "./components/Menu/index.vue";
 header {
   position: sticky;
   top: 0;
+  background: var(--neutral-color-70);
   
   padding: 20px 20px;
   width: 100%;
