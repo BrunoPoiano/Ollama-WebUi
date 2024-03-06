@@ -6,8 +6,12 @@ ollama.com/blog/ollama-is-now-available-as-an-official-docker-image
 
 ## Steps to Build
 `git clone https://github.com/BrunoPoiano/Ollama-WebUi.git`
+</br>
 `cd Ollama-WebUi`
+</br>
 `docker compose up -d`
+</br>
+
 
 App expets the port to be `11434` if you changed, change the link in the .env
 
