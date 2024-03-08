@@ -1,8 +1,9 @@
-
 <template>
   <header>
     <div class="logo">
-      <OllamaLogo class="ollama-icon" />
+      <router-link to="/">
+        <OllamaLogo class="ollama-icon" />
+      </router-link>
       <h5>Ollama chat app</h5>
     </div>
     <div class="menu">
@@ -19,19 +20,20 @@ import Menu from "./components/Menu/index.vue";
 
 <style scoped>
 header {
+  z-index:99;
   position: sticky;
   top: 0;
   background: var(--neutral-color-70);
-  
-  padding: 20px 20px;
+
+  padding: 1.3rem;
   width: 100%;
   display: flex;
-  gap: 20px;
+  gap: 1.3rem;
   justify-content: space-between;
 
-  > .logo {
+  >.logo {
     display: flex;
-    gap: 10px;
+    gap: 0.9rem;
     place-items: center;
   }
 }

@@ -66,13 +66,13 @@ const deleteModel = async () => {
 
 .dialog-wrapper {
   display: grid;
-  gap: 20px;
+  gap: 1.3rem;
 }
 
 .modal-actions {
   width: 100%;
   display: flex;
-  gap: 10px;
+  gap: 0.9rem;
   justify-content: end;
 }
 </style>

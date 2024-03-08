@@ -22,15 +22,15 @@ section {
   width: 100%;
   display: grid;
   place-items: baseline;
-  gap: 10px;
+  gap: 0.9rem;
 }
 
 .messages{
   & p {
-    margin-left: 20px;
+    margin-left: 1.3rem;
   }
   & [data-user="true"]{
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
   } 
 }
 </style>

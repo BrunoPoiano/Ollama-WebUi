@@ -14,7 +14,6 @@ import PullModel from './components/PullModel/index.vue';
 export default {
   data() {
     return {
-
       refresh: 0
     }
   },
@@ -27,6 +26,6 @@ export default {
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  gap: 20px;
+  gap: 1.3rem;
 }
 </style>

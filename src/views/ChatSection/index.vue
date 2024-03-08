@@ -1,22 +1,26 @@
 <template>
   <section class="chat-box">
     <ChatLog :content="conversation" />
-    <div v-if="waitingResponse">Waiting response</div>
-
+    <div v-if="waitingResponse">Waiting response <i class="fa-solid fa-spinner fa-spin"></i></div>
     <div class="ui-elements">
 
       <textarea rows="10" id="myTextarea" type="text" v-model="prompt" />
+      <div class="buttons">
+        <button v-if="generating" @click="abort()">
+          Abort
+        </button>
+        <button v-else @click="chat" :disabled="selectedModel == ''">
+          Send
+        </button>
 
-      <button v-if="generating" class="send-button" @click="abort()">
-        Abort
-      </button>
-      <button v-else class="send-button" @click="chat" :disabled="selectedModel == ''">
-        Send
-      </button>
+        <button class="clear" @click="clearContext">
+          Clear Dialog
+        </button>
+      </div>
     </div>
   </section>
 </template>
-  
+
 <script setup>
 import { onMounted, ref, provide } from "vue";
 import ollama from "ollama";
@@ -31,7 +35,7 @@ const context = ref([]);
 const conversation = ref([]);
 
 const chat = async () => {
-  
+
   selectedModel.value = localStorage.getItem('SELECTED_MODEL')
 
   const form = [
@@ -80,6 +84,11 @@ const chat = async () => {
   }
 };
 
+const clearContext = () => {
+  context.value = []
+  conversation.value = []
+}
+
 const abort = () => {
   ollama.abort();
   generating.value = false;
@@ -95,12 +104,12 @@ onMounted(() => {
 });
 
 </script>
-   
-  
+
+
 <style scoped>
 .chat-box {
-  --chat-box-gap: 50px;
-  --ui-elements-gap: 20px;
+  --chat-box-gap: 2.5em;
+  --ui-elements-gap: 1.5em;
 
   --min-height: calc(95vh - var(--chat-box-gap) - var(--ui-elements-gap));
 
@@ -116,13 +125,19 @@ onMounted(() => {
     display: grid;
     gap: var(--ui-elements-gap);
     place-items: center;
-  }
 
-  & .models-list {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+    & .buttons{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap:1.3rem;
+      position: relative;
+
+      .clear{
+        position: absolute;
+        right: 0;
+      }
+    }
   }
 }
 </style>

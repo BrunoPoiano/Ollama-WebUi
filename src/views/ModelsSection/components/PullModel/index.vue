@@ -89,11 +89,11 @@ const pullModel = async () => {
 <style scoped>
 .dialog-wrapper {
   display: grid;
-  gap: 20px;
+  gap: 1.3rem;
 
   & .search {
     display: flex;
-    gap: 20px;
+    gap: 1.3rem;
   }
 
   & .loading {

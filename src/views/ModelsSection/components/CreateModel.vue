@@ -106,7 +106,7 @@ const disableCreateButton = computed(() => {
 <style scoped>
 .form {
   display: grid;
-  gap: 10px;
+  gap: 0.9rem;
 
   >div{
     display: grid;

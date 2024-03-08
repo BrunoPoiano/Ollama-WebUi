@@ -49,16 +49,18 @@ onMounted(() => {
 
 <style scoped>
 table {
+
+  margin-top: 30px;
   border: 1px solid;
 
   & th:not(:last-child) {
     min-width: 20ch;
-    padding: 10px;
+    padding: 0.9rem;
   }
 
   & th:last-child {
     min-width: 5ch;
-    padding: 10px;
+    padding: 0.9rem;
   }
 
   & td {

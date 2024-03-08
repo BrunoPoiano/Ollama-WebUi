@@ -42,16 +42,16 @@ onMounted(() => {
 <style>
 .models-list {
   width: 100%;
-  gap: 20px;
+  gap: 1.3rem;
 
   display: grid;
-  gap: 10px;
+  gap: 0.9rem;
 
   >div {
     display: flex;
     justify-content: center;
     place-items: center;
-    gap: 10px;
+    gap: 0.9rem;
 
   }
 

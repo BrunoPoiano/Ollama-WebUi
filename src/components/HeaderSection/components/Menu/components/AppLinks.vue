@@ -14,13 +14,13 @@ const router = useRouter().currentRoute;
 .app-links {
   width: 100%;
   display: grid;
-  gap: 20px;
+  gap: 1.3rem;
 
   & a {
     border-radius: var(--border-radius);
-    padding: 15px 20px;
+    padding: 1rem 1.3rem;
     display: block;
-    text-decoration: none;
+    text-decoration: none; 
     color: var(--neutral-color-15);
 
     text-transform: uppercase;

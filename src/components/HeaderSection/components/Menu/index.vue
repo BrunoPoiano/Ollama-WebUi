@@ -53,11 +53,11 @@ button[data-open="false"] i {
   right: 0;
   width: var(--max-width);
   height: 100vh;
-  padding: 20px;
+  padding: 1.3rem;
 
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 1.3rem;
 
   border-radius: var(--border-radius);
   background: var(--neutral-color-75);
@@ -72,7 +72,7 @@ button[data-open="false"] i {
 }
 
 .app-menu {
-  gap: 20px;
+  gap: 1.3rem;
   display: grid;
   place-items: baseline;
 
