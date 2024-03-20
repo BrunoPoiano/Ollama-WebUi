@@ -4,6 +4,7 @@
     <div v-if="waitingResponse">Waiting response <i class="fa-solid fa-spinner fa-spin"></i></div>
     <div class="ui-elements">
 
+      <input type="file" accept="image/*" v-if="selectedModel.split(':')[0] == 'llava'" @change="addImage">
       <textarea rows="10" id="myTextarea" type="text" v-model="prompt" />
       <div class="buttons">
         <button v-if="generating" @click="abort()">
@@ -32,11 +33,23 @@ const waitingResponse = ref(false);
 const selectedModel = ref(localStorage.getItem('SELECTED_MODEL'));
 const prompt = ref("write a joke");
 const context = ref([]);
+const image = ref();
 const conversation = ref([]);
 
-const chat = async () => {
+const addImage = (event) => {
+  const file = event.target.files[0];
+  const reader = new FileReader();
 
-  selectedModel.value = localStorage.getItem('SELECTED_MODEL')
+  reader.onloadend = () => {
+    image.value = reader.result.split(',')[1]
+  }
+
+  reader.readAsDataURL(file);
+  clearContext()
+}
+
+
+const chat = async () => {
 
   const form = [
     {
@@ -56,16 +69,16 @@ const chat = async () => {
     prompt: prompt.value,
     stream: true,
     context: context.value,
+    images: [image.value]
   };
 
   prompt.value = "";
 
   try {
+    generating.value = true;
     waitingResponse.value = true;
     const response = await ollama.generate(params);
     waitingResponse.value = false;
-
-    generating.value = true;
 
     for await (const part of response) {
       const index = conversation.value.length - 1;
@@ -101,6 +114,12 @@ onMounted(() => {
     this.style.height = "auto";
     this.style.height = this.scrollHeight + "px";
   });
+
+  window.addEventListener('SELECTED_MODEL_CHANGE', () => {
+    selectedModel.value = localStorage.getItem('SELECTED_MODEL')
+    clearContext()
+  });
+
 });
 
 </script>
@@ -126,14 +145,14 @@ onMounted(() => {
     gap: var(--ui-elements-gap);
     place-items: center;
 
-    & .buttons{
+    & .buttons {
       width: 100%;
       display: flex;
       justify-content: center;
-      gap:1.3rem;
+      gap: 1.3rem;
       position: relative;
 
-      .clear{
+      .clear {
         position: absolute;
         right: 0;
       }

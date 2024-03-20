@@ -32,6 +32,12 @@ const listModels = async () => {
 
 const handleSelectedModel = () => {
   localStorage.setItem("SELECTED_MODEL", selectedModel.value);
+
+  window.dispatchEvent(new CustomEvent('SELECTED_MODEL_CHANGE', {
+    detail: {
+      storage: localStorage.getItem('SELECTED_MODEL')
+    }
+  }));
 };
 
 onMounted(() => {
