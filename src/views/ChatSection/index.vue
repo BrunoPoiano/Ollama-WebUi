@@ -106,7 +106,6 @@ onMounted(() => {
   textarea.addEventListener("input", function () {
     this.style.height = "auto";
     this.style.height = this.scrollHeight + "px";
-    this.style.maxHeight = "250px";
   });
   eventBus.$on("cleanChat", cleatChatLog);
 });
@@ -131,14 +130,19 @@ onBeforeUnmount(() => {
   gap: var(--chat-box-gap);
   width: 100%;
 
-  & .ui-elements {
+  .ui-elements {
     width: 100%;
     display: grid;
     gap: var(--ui-elements-gap);
     place-items: center;
+
+    textarea {
+      font-size: 0.9rem;
+      max-height: 250px;
+    }
   }
 
-  & .models-list {
+  .models-list {
     width: 100%;
     display: flex;
     justify-content: center;
