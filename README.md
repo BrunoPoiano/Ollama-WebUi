@@ -3,7 +3,7 @@
 
 WebUi to interact with Local LLM ollama written in Vue.js 
 
-![Screenshot of the App.](/public/demo.gif)
+![Screenshot of the App.](/public/demo.png)
 
 ## Install
 Clone the project
