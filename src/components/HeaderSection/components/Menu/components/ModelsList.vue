@@ -1,6 +1,5 @@
 <template>
   <div class="models-list">
-    <label for="">Select a model</label>
     <div>
       <select v-model="selectedModel" @change="handleSelectedModel" aria-placeholder="Select a model">
         <option v-for="model in models" :key="model.model" :value="model.model">
@@ -41,7 +40,7 @@ onMounted(() => {
 
 <style>
 .models-list {
-  width: 100%;
+  width: max-content;
   gap: 20px;
 
   display: grid;

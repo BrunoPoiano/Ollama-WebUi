@@ -2,15 +2,24 @@
   <section class="chat-box">
     <ChatLog :content="conversation" />
     <div v-if="waitingResponse">Waiting response</div>
-
     <div class="ui-elements">
-
-      <textarea rows="10" id="myTextarea" type="text" v-model="prompt" />
+      <textarea
+        rows="10"
+        id="myTextarea"
+        type="text"
+        placeholder="Ask something!"
+        v-model="prompt"
+      />
 
       <button v-if="generating" class="send-button" @click="abort()">
         Abort
       </button>
-      <button v-else class="send-button" @click="chat" :disabled="selectedModel == ''">
+      <button
+        v-else
+        class="send-button"
+        @click="chat"
+        :disabled="selectedModel == ''"
+      >
         Send
       </button>
     </div>
@@ -18,21 +27,27 @@
 </template>
   
 <script setup>
-import { onMounted, ref, provide } from "vue";
+import { onMounted, ref, provide, onBeforeUnmount } from "vue";
 import ollama from "ollama";
 import ChatLog from "./components/ChatLog.vue";
+import eventBus from "../../EventsBus";
 
 const emit = defineEmits(["responseStatus"]);
 const generating = ref(false);
 const waitingResponse = ref(false);
-const selectedModel = ref(localStorage.getItem('SELECTED_MODEL'));
+const selectedModel = ref(localStorage.getItem("SELECTED_MODEL"));
 const prompt = ref("write a joke");
 const context = ref([]);
 const conversation = ref([]);
 
+const cleatChatLog = () => {
+  prompt.value = "";
+  context.value = [];
+  conversation.value = [];
+};
+
 const chat = async () => {
-  
-  selectedModel.value = localStorage.getItem('SELECTED_MODEL')
+  selectedModel.value = localStorage.getItem("SELECTED_MODEL");
 
   const form = [
     {
@@ -70,7 +85,7 @@ const chat = async () => {
         conversation.value[index].message + part.response;
 
       if (part.context) {
-        emit('responseStatus', part)
+        emit("responseStatus", part);
         generating.value = false;
         context.value = part.context;
       }
@@ -91,9 +106,14 @@ onMounted(() => {
   textarea.addEventListener("input", function () {
     this.style.height = "auto";
     this.style.height = this.scrollHeight + "px";
+    this.style.maxHeight = "250px";
   });
+  eventBus.$on("cleanChat", cleatChatLog);
 });
 
+onBeforeUnmount(() => {
+  eventBus.$off("cleanChat", cleatChatLog);
+});
 </script>
    
   

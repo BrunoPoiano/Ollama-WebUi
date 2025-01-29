@@ -3,7 +3,7 @@
 *::before {
   box-sizing: border-box;
   margin: 0;
-  padding: 0
+  padding: 0;
 }
 
 html {
@@ -12,33 +12,113 @@ html {
 }
 
 :root {
-
+  interpolate-size: allow-keywords;
   /* Main Primary color */
   --base-color: hsl(0, 0%, 0%);
   --mix-color: rgb(255, 255, 255);
   --danger-color: rgb(255, 0, 0);
-  
-  --danger-color-70: color-mix(in oklab, var(--danger-color) 70%, var(--mix-color));
 
-  --neutral-color-10: color-mix(in oklab, var(--base-color) 10%, var(--mix-color));
-  --neutral-color-15: color-mix(in oklab, var(--base-color) 15%, var(--mix-color));
-  --neutral-color-20: color-mix(in oklab, var(--base-color) 20%, var(--mix-color));
-  --neutral-color-25: color-mix(in oklab, var(--base-color) 25%, var(--mix-color));
-  --neutral-color-30: color-mix(in oklab, var(--base-color) 30%, var(--mix-color));
-  --neutral-color-35: color-mix(in oklab, var(--base-color) 35%, var(--mix-color));
-  --neutral-color-40: color-mix(in oklab, var(--base-color) 40%, var(--mix-color));
-  --neutral-color-45: color-mix(in oklab, var(--base-color) 45%, var(--mix-color));
-  --neutral-color-50: color-mix(in oklab, var(--base-color) 50%, var(--mix-color));
-  --neutral-color-55: color-mix(in oklab, var(--base-color) 55%, var(--mix-color));
-  --neutral-color-60: color-mix(in oklab, var(--base-color) 60%, var(--mix-color));
-  --neutral-color-65: color-mix(in oklab, var(--base-color) 65%, var(--mix-color));
-  --neutral-color-70: color-mix(in oklab, var(--base-color) 70%, var(--mix-color));
-  --neutral-color-75: color-mix(in oklab, var(--base-color) 75%, var(--mix-color));
-  --neutral-color-80: color-mix(in oklab, var(--base-color) 80%, var(--mix-color));
-  --neutral-color-85: color-mix(in oklab, var(--base-color) 85%, var(--mix-color));
-  --neutral-color-90: color-mix(in oklab, var(--base-color) 90%, var(--mix-color));
-  --neutral-color-95: color-mix(in oklab, var(--base-color) 95%, var(--mix-color));
-  --neutral-color-100: color-mix(in oklab, var(--base-color) 100%, var(--mix-color));
+  --danger-color-70: color-mix(
+    in oklab,
+    var(--danger-color) 70%,
+    var(--mix-color)
+  );
+
+  --neutral-color-10: color-mix(
+    in oklab,
+    var(--base-color) 10%,
+    var(--mix-color)
+  );
+  --neutral-color-15: color-mix(
+    in oklab,
+    var(--base-color) 15%,
+    var(--mix-color)
+  );
+  --neutral-color-20: color-mix(
+    in oklab,
+    var(--base-color) 20%,
+    var(--mix-color)
+  );
+  --neutral-color-25: color-mix(
+    in oklab,
+    var(--base-color) 25%,
+    var(--mix-color)
+  );
+  --neutral-color-30: color-mix(
+    in oklab,
+    var(--base-color) 30%,
+    var(--mix-color)
+  );
+  --neutral-color-35: color-mix(
+    in oklab,
+    var(--base-color) 35%,
+    var(--mix-color)
+  );
+  --neutral-color-40: color-mix(
+    in oklab,
+    var(--base-color) 40%,
+    var(--mix-color)
+  );
+  --neutral-color-45: color-mix(
+    in oklab,
+    var(--base-color) 45%,
+    var(--mix-color)
+  );
+  --neutral-color-50: color-mix(
+    in oklab,
+    var(--base-color) 50%,
+    var(--mix-color)
+  );
+  --neutral-color-55: color-mix(
+    in oklab,
+    var(--base-color) 55%,
+    var(--mix-color)
+  );
+  --neutral-color-60: color-mix(
+    in oklab,
+    var(--base-color) 60%,
+    var(--mix-color)
+  );
+  --neutral-color-65: color-mix(
+    in oklab,
+    var(--base-color) 65%,
+    var(--mix-color)
+  );
+  --neutral-color-70: color-mix(
+    in oklab,
+    var(--base-color) 70%,
+    var(--mix-color)
+  );
+  --neutral-color-75: color-mix(
+    in oklab,
+    var(--base-color) 75%,
+    var(--mix-color)
+  );
+  --neutral-color-80: color-mix(
+    in oklab,
+    var(--base-color) 80%,
+    var(--mix-color)
+  );
+  --neutral-color-85: color-mix(
+    in oklab,
+    var(--base-color) 85%,
+    var(--mix-color)
+  );
+  --neutral-color-90: color-mix(
+    in oklab,
+    var(--base-color) 90%,
+    var(--mix-color)
+  );
+  --neutral-color-95: color-mix(
+    in oklab,
+    var(--base-color) 95%,
+    var(--mix-color)
+  );
+  --neutral-color-100: color-mix(
+    in oklab,
+    var(--base-color) 100%,
+    var(--mix-color)
+  );
 
   --font-size-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.89rem);
   --font-size-base: clamp(1rem, 0.34vw + 0.91rem, 1.19rem);
@@ -49,9 +129,9 @@ html {
   --font-size-xxxl: clamp(3.05rem, 3.54vw + 2.17rem, 5rem);
 
   --border-radius: 10px;
-  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
 }
 
 body {
@@ -69,7 +149,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
@@ -138,7 +218,7 @@ dialog {
   -moz-box-shadow: 0px 0px 12px 0px var(--neutral-color-100);
   box-shadow: 0px 0px 12px 0px var(--neutral-color-100);
 
-  & button[data-modal-close]{
+  & button[data-modal-close] {
     background: none;
 
     width: 40px;
@@ -146,13 +226,12 @@ dialog {
 
     position: absolute;
     top: 5px;
-    right:10px;
+    right: 10px;
 
     display: grid;
     place-items: center;
   }
 }
-
 
 button {
   min-width: 60px;
@@ -172,7 +251,7 @@ button {
 
   transition: all 200ms ease;
 
-  &[data-icon]{
+  &[data-icon] {
     min-width: fit-content;
     padding: 5px 10px;
   }
@@ -183,11 +262,10 @@ button {
 
   &:disabled {
     opacity: 0.5;
-  }  
+  }
 }
 
 select {
-
   --background-color: var(--neutral-color-85);
 
   max-width: 50ch;
@@ -210,12 +288,10 @@ select {
   & option {
     margin-bottom: 5px;
   }
-
 }
 
 input,
 textarea {
-
   --background-color: var(--neutral-color-85);
 
   width: 100%;
