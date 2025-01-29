@@ -1,18 +1,35 @@
+
 # Ollama WebUi
-WebUi to interact with Local LLM ollama
 
-Setup ollama as a docker container or global
-ollama.com/blog/ollama-is-now-available-as-an-official-docker-image
+WebUi to interact with Local LLM ollama written in Vue.js 
 
-## Steps to Build
-`git clone https://github.com/BrunoPoiano/Ollama-WebUi.git`
-`cd Ollama-WebUi`
-`docker compose up -d`
+<video src="public/demo.webm" />
 
-App expets the port to be `11434` if you changed, change the link in the .env
+## Install
+Clone the project
+
+```bash
+`git clone git@github.com:BrunoPoiano/ollama-webui.git
+```
+
+cd to the directory
+
+```bash
+  cd ollama-webui
+```
+Deploy the container
+
+```bash
+  `docker compose up -d`
+```
 
 ## On the browser 
 `http://localhost:5173/`
 
 
-<video src="public/conversation.webm" />
+## .env
+
+App expets the port to be `11434` if you changed, change the link in the .env
+
+
+
