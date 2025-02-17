@@ -1,7 +1,11 @@
 <template>
   <div class="models-list">
     <div>
-      <select v-model="selectedModel" @change="handleSelectedModel" aria-placeholder="Select a model">
+      <select
+        v-model="selectedModel"
+        @change="handleSelectedModel"
+        aria-placeholder="Select a model"
+      >
         <option v-for="model in models" :key="model.model" :value="model.model">
           {{ model.name }}
         </option>
@@ -14,9 +18,8 @@
 </template>
 
 <script setup>
-import ollama from "ollama";
 import { onMounted, ref, defineEmits } from "vue";
-
+const ollama_end_point = import.meta.env.VITE_OLLAMA_END_POINT;
 const emit = defineEmits(["selectedModelEmit"]);
 const models = ref([]);
 const selectedModel = ref(localStorage.getItem("SELECTED_MODEL"));
@@ -24,9 +27,19 @@ const loading = ref(false);
 
 const listModels = async () => {
   loading.value = true;
-  const modelsList = await ollama.list();
-  models.value = modelsList.models;
-  loading.value = false;
+  try {
+    const response = await fetch(`${ollama_end_point}/tags`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const modelsList = await response.json();
+    models.value = modelsList.models;
+    loading.value = false;
+  } catch (error) {
+    console.error("Error:", error);
+  }
 };
 
 const handleSelectedModel = () => {
@@ -46,12 +59,11 @@ onMounted(() => {
   display: grid;
   gap: 10px;
 
-  >div {
+  > div {
     display: flex;
     justify-content: center;
     place-items: center;
     gap: 10px;
-
   }
 
   & button {
@@ -63,7 +75,7 @@ onMounted(() => {
     aspect-ratio: 1;
   }
 
-  & button[data-loading="false"]>i {
+  & button[data-loading="false"] > i {
     animation: 500ms fadeOut ease-out forwards;
   }
 }

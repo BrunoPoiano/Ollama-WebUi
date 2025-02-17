@@ -1,23 +1,20 @@
 <template>
   <button @click="openModal">Pull model</button>
 
-
   <Teleport to="body">
     <dialog id="pullModel">
       <div class="dialog-wrapper">
-        <button data-modal-close @click="closeModal"><i class="fa-solid fa-x"></i></button>
-        <h5>
-          Pull Model
-        </h5>
+        <button data-modal-close @click="closeModal">
+          <i class="fa-solid fa-x"></i>
+        </button>
+        <h5>Pull Model</h5>
         <div class="search">
-          <input type="text" v-model="model" placeholder="Model name">
-          <button @click="pullModel"> Pull </button>
+          <input type="text" v-model="model" placeholder="Model name" />
+          <button @click="pullModel">Pull</button>
         </div>
 
         <div class="loading" v-if="loading">
-          <span>
-            downloading
-          </span>
+          <span> downloading </span>
         </div>
         <div class="status">
           <p v-for="(resp, index) in pullResponse" :key="index">
@@ -30,13 +27,11 @@
 </template>
 
 <script setup>
-
 import { ref } from "vue";
-import ollama from "ollama";
 
-const emits = defineEmits(['refreshContent'])
-const model = ref('')
-const loading = ref(false)
+const emits = defineEmits(["refreshContent"]);
+const model = ref("");
+const loading = ref(false);
 const pullResponse = ref([]);
 
 const openModal = () => {
@@ -49,41 +44,36 @@ const closeModal = () => {
   pullModel.close();
 };
 
-
 const pullModel = async () => {
-
   const params = {
-    "model": model.value.trim(),
-    "stream": true
-  }
+    model: model.value.trim(),
+    stream: true,
+  };
 
   try {
-    loading.value = true
+    loading.value = true;
     const response = await ollama.pull(params);
 
     for await (const part of response) {
+      const index =
+        pullResponse.value.length > 0 ? pullResponse.value.length - 1 : 0;
 
-      const index = pullResponse.value.length > 0 ? pullResponse.value.length - 1 : 0
-
-      if (index == 0) {
+      if (index === 0) {
         pullResponse.value.push(part);
       }
 
-      if (index > 0 && pullResponse.value[index].status != part.status) {
+      if (index > 0 && pullResponse.value[index].status !== part.status) {
         pullResponse.value.push(part);
       }
     }
-    emits('refreshContent')
-    loading.value = false
-
+    emits("refreshContent");
+    loading.value = false;
   } catch (error) {
     console.error(error);
     ollama.abort();
-    loading.value = false
+    loading.value = false;
   }
-
-}
-
+};
 </script>
 
 <style scoped>
@@ -100,6 +90,5 @@ const pullModel = async () => {
     display: grid;
     place-items: center;
   }
-
 }
 </style>

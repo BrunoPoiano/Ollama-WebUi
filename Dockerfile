@@ -1,14 +1,13 @@
-FROM node:16
+FROM node:20
 
 WORKDIR /usr/src/app
-
-COPY ./package*.json ./
-
-RUN apt-get update \ 
-    && apt-get install \
-    && apt-get install git \
-    && npm install 
-
 COPY . .
+
+RUN apt-get update \
+  && apt-get install \
+  && apt-get install git \
+  && npm install
+
+EXPOSE 5173
 
 CMD ["npm", "run", "dev"]

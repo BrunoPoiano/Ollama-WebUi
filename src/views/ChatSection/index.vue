@@ -25,12 +25,12 @@
     </div>
   </section>
 </template>
-  
+
 <script setup>
 import { onMounted, ref, provide, onBeforeUnmount } from "vue";
-import ollama from "ollama";
 import ChatLog from "./components/ChatLog.vue";
 import eventBus from "../../EventsBus";
+const ollama_end_point = import.meta.env.VITE_OLLAMA_END_POINT;
 
 const emit = defineEmits(["responseStatus"]);
 const generating = ref(false);
@@ -39,6 +39,8 @@ const selectedModel = ref(localStorage.getItem("SELECTED_MODEL"));
 const prompt = ref("write a joke");
 const context = ref([]);
 const conversation = ref([]);
+const controller = ref(null);
+const currentReader = ref(null);
 
 const cleatChatLog = () => {
   prompt.value = "";
@@ -48,7 +50,8 @@ const cleatChatLog = () => {
 
 const chat = async () => {
   selectedModel.value = localStorage.getItem("SELECTED_MODEL");
-
+  if (!selectedModel.value) return;
+  controller.value = new AbortController();
   const form = [
     {
       role: "You",
@@ -73,31 +76,105 @@ const chat = async () => {
 
   try {
     waitingResponse.value = true;
-    const response = await ollama.generate(params);
+    const response = await fetch(`${ollama_end_point}/generate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(params),
+      signal: controller.value.signal,
+    });
     waitingResponse.value = false;
 
+    const reader = response.body.getReader();
+    const index = conversation.value.length - 1;
     generating.value = true;
-
-    for await (const part of response) {
-      const index = conversation.value.length - 1;
-
-      conversation.value[index].message =
-        conversation.value[index].message + part.response;
-
-      if (part.context) {
-        emit("responseStatus", part);
-        generating.value = false;
-        context.value = part.context;
-      }
-    }
+    await processStreamingResponse(reader, index);
   } catch (error) {
-    console.error(error);
+    if (error.name !== "AbortError") {
+      console.error("Chat error:", error);
+      conversation.value.push({
+        role: "System",
+        message: "An error occurred while getting the response.",
+      });
+    }
+  } finally {
+    generating.value = false;
+    waitingResponse.value = false;
+    if (!generating.value) {
+      controller.value = null;
+    }
   }
 };
 
-const abort = () => {
-  ollama.abort();
-  generating.value = false;
+const processStreamingResponse = async (reader, index) => {
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+
+      if (done) {
+        generating.value = false;
+        break;
+      }
+
+      buffer += decoder.decode(value, { stream: true });
+
+      let newlineIndex;
+      while ((newlineIndex = buffer.indexOf("\n")) !== -1) {
+        const line = buffer.slice(0, newlineIndex);
+        buffer = buffer.slice(newlineIndex + 1);
+
+        if (line.trim()) {
+          try {
+            const part = JSON.parse(line);
+            conversation.value[index].message += part.response;
+
+            if (part.done) {
+              emit("responseStatus", part);
+              generating.value = false;
+              context.value = part.context;
+              return;
+            }
+          } catch (e) {
+            console.error("JSON parse error:", e);
+          }
+        }
+      }
+    }
+  } catch (error) {
+    if (error.name === "AbortError") {
+      console.log("Request aborted");
+    } else {
+      console.error("Stream error:", error);
+    }
+  } finally {
+    generating.value = false;
+    waitingResponse.value = false;
+  }
+};
+
+const abort = async () => {
+  if (generating.value) {
+    try {
+      if (controller.value) {
+        controller.value.abort();
+        controller.value = null;
+      }
+
+      if (currentReader.value) {
+        await currentReader.value.cancel();
+        currentReader.value = null;
+      }
+    } catch (error) {
+      console.error("Error during abort:", error);
+    } finally {
+      generating.value = false;
+      waitingResponse.value = false;
+    }
+  }
 };
 
 onMounted(() => {
@@ -105,7 +182,7 @@ onMounted(() => {
 
   textarea.addEventListener("input", function () {
     this.style.height = "auto";
-    this.style.height = this.scrollHeight + "px";
+    this.style.height = `${this.scrollHeight}px`;
   });
   eventBus.$on("cleanChat", cleatChatLog);
 });
@@ -114,8 +191,7 @@ onBeforeUnmount(() => {
   eventBus.$off("cleanChat", cleatChatLog);
 });
 </script>
-   
-  
+
 <style scoped>
 .chat-box {
   --chat-box-gap: 50px;

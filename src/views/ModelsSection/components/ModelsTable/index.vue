@@ -20,27 +20,38 @@
 </template>
 
 <script setup>
-import ollama from "ollama";
 import { onMounted, ref } from "vue";
 import DeleteModel from "./components/DeleteModel.vue";
-const ollama_end_point = import.meta.env.VITE_OLLAMA_END_POINT
+const ollama_end_point = import.meta.env.VITE_OLLAMA_END_POINT;
 
 const models = ref([]);
 
 const listModels = async () => {
-  const modelsList = await ollama.list();
-  models.value = modelsList.models;
+  const response = fetch();
+  try {
+    const response = await fetch(`${ollama_end_point}/list`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const modelsList = await response.json();
+    models.value = modelsList.models;
+    loading.value = false;
+  } catch (error) {
+    console.error("Error:", error);
+  }
 };
 
 const formatSize = (size) => {
-  const units = ['B', 'KB', 'MB', 'GB'];
+  const units = ["B", "KB", "MB", "GB"];
   let unitIndex = 0;
   while (unitIndex < units.length - 1 && size > 1024) {
     size /= 1024;
     unitIndex++;
   }
   return `${size.toFixed(2)}${units[unitIndex]}`;
-}
+};
 
 onMounted(() => {
   listModels();
@@ -71,9 +82,7 @@ table {
   }
 }
 
-
 @media screen and (max-width: 600px) {
-
   table {
     & thead {
       border: none;
@@ -88,7 +97,7 @@ table {
 
     & tr {
       display: block;
-      margin-bottom: .4em;
+      margin-bottom: 0.4em;
     }
 
     & td,
@@ -103,6 +112,5 @@ table {
       font-weight: bold;
     }
   }
-
 }
 </style>
