@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "ollama": "^0.4.8",
     "vue": "^3.4.15",
     "vue-router": "^4.3.0"
   },

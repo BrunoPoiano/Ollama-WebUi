@@ -70,8 +70,9 @@ const closeModal = () => {
 
 const createModel = async () => {
   const model = {
-    name: form.value.name,
-    modelfile: `FROM ${form.value.model}\nSYSTEM ${form.value.personality}`,
+    model: form.value.name,
+    from: form.value.model,
+    system: form.value.personality,
   };
 
   try {
@@ -95,7 +96,7 @@ const createModel = async () => {
 
 const listModels = async () => {
   try {
-    const response = await fetch(`${ollama_end_point}/list`, {
+    const response = await fetch(`${ollama_end_point}/tags`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -103,7 +104,6 @@ const listModels = async () => {
     });
     const modelsList = await response.json();
     models.value = modelsList.models;
-    loading.value = false;
   } catch (error) {
     console.error("Error:", error);
   }

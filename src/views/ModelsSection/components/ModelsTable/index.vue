@@ -27,9 +27,8 @@ const ollama_end_point = import.meta.env.VITE_OLLAMA_END_POINT;
 const models = ref([]);
 
 const listModels = async () => {
-  const response = fetch();
   try {
-    const response = await fetch(`${ollama_end_point}/list`, {
+    const response = await fetch(`${ollama_end_point}/tags`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -37,9 +36,8 @@ const listModels = async () => {
     });
     const modelsList = await response.json();
     models.value = modelsList.models;
-    loading.value = false;
   } catch (error) {
-    console.error("Error:", error);
+    console.error("List error:", error);
   }
 };
 
